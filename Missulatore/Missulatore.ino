@@ -1,6 +1,8 @@
-int button = 7 ;
-int led = 6 ;
-int buzzer = 8;
+int button = 10 ;
+int led = 12 ;
+int buzzer = 11;
+int rosso = 9 ;
+int verde = 8 ;
 
 int tempo = 0;
 int tempodue = 0;
@@ -8,28 +10,31 @@ int ms = 0;
 int msdue = 0;
 //include lcd
 #include <LiquidCrystal.h>
-const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+const int rs = 2, en = 3, d4 = 4, d5 = 5, d6 = 6, d7 = 7;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
 void setup() {
   // put your setup code here, to run once:
 pinMode(button,INPUT);
 pinMode(led,OUTPUT);
 pinMode(buzzer,OUTPUT);
-
-Serial.begin(9600);//dico che c'e serial
-
+pinMode(verde,OUTPUT);
+pinMode(rosso,OUTPUT);
+lcd.begin(16,2);
 randomSeed(analogRead(0));//dichiaro random
 tempo = random(2000,5000);//numero di random da 300 a 800
 tempodue = random(2000,5000);//numero di random da 300 a 800
-
-Serial.println("questo è il tempo Random:");
-Serial.println(tempo);
-Serial.println(tempodue);
 programma();
 }
 void programma()
 {
-
+    lcd.clear();
+    lcd.print("sei pronto?");
+    lcd.setCursor(0,1);
+    lcd.print("clica bottone");
+    while(digitalRead(button)==LOW)
+    {}
+    lcd.clear();
     delay(tempo);
     digitalWrite(led,HIGH);
     while(digitalRead(button)==LOW)
@@ -40,8 +45,9 @@ void programma()
     if(digitalRead(button)==HIGH)
     {
       digitalWrite(led,LOW);
-      Serial.println("riflessi");
-      Serial.println(ms);
+      lcd.print("Led:");
+      lcd.print(ms);
+      lcd.print("ms");
     }
   
     delay(tempodue);
@@ -54,10 +60,24 @@ void programma()
     if(digitalRead(button)==HIGH)
     { 
       digitalWrite(buzzer,LOW);
-      Serial.println("riflessi");
-      Serial.println(msdue);
-
+      lcd.setCursor(0,1);
+      lcd.print("Buzzer:");
+      lcd.print(msdue);
+      lcd.print("ms");
   }
+  delay(2000);
+  if(ms+msdue<2000)
+  {
+    digitalWrite(verde,HIGH);
+    lcd.clear();
+    lcd.print("sei passato");
+   }
+   else
+   {
+    digitalWrite(rosso,HIGH);
+    lcd.clear();
+    lcd.print("non sei passato");
+    }
 }
 void loop() {
   // put your main code here, to run repeatedly:
