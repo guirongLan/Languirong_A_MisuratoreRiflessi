@@ -75,10 +75,12 @@ void programma()
     lcd.print("non sei passato");
     }
     delay(5000);
+    digitalWrite(verde,LOW);
+    digitalWrite(rosso,LOW);
 }
 void loop() {
   // put your main code here, to run repeatedly:
-  randomSeed(analogRead(0));//dichiaro random
+randomSeed(analogRead(0));//dichiaro random
 tempo = random(2000,5000);//numero di random da 300 a 800
 tempodue = random(2000,5000);//numero di random da 300 a 800
 programma();
